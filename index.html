@@ -1,0 +1,202 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>netcdftime &#8212; netcdftime 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="netcdftime">
+<h1>netcdftime<a class="headerlink" href="#netcdftime" title="Permalink to this headline">¶</a></h1>
+<p>Python library for decoding time units and variable values in a netCDF file
+conforming to the Climate and Forecasting (CF) netCDF conventions.</p>
+<div class="toctree-wrapper compound">
+</div>
+<span class="target" id="module-netcdftime"></span><dl class="function">
+<dt id="netcdftime.date2num">
+<code class="descclassname">netcdftime.</code><code class="descname">date2num</code><span class="sig-paren">(</span><em>dates</em>, <em>units</em>, <em>calendar='standard'</em><span class="sig-paren">)</span><a class="headerlink" href="#netcdftime.date2num" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return numeric time values given datetime objects. The units
+of the numeric time values are described by the <cite>units</cite> argument
+and the <cite>calendar</cite> keyword. The datetime objects must
+be in UTC with no time-zone offset.  If there is a
+time-zone offset in <cite>units</cite>, it will be applied to the
+returned numeric values.</p>
+<p><strong>`dates`</strong>: A datetime object or a sequence of datetime objects.
+The datetime objects should not include a time-zone offset.</p>
+<p><strong>`units`</strong>: a string of the form <cite>&lt;time units&gt; since &lt;reference time&gt;</cite>
+describing the time units. <cite>&lt;time units&gt;</cite> can be days, hours, minutes,
+seconds, milliseconds or microseconds. <cite>&lt;reference time&gt;</cite> is the time
+origin.</p>
+<p><strong>`calendar`</strong>: describes the calendar used in the time calculations.
+All the values currently defined in the
+[CF metadata convention](<a class="reference external" href="http://cfconventions.org">http://cfconventions.org</a>)
+Valid calendars <cite>‘standard’, ‘gregorian’, ‘proleptic_gregorian’
+‘noleap’, ‘365_day’, ‘360_day’, ‘julian’, ‘all_leap’, ‘366_day’</cite>.
+Default is <cite>‘standard’</cite>, which is a mixed Julian/Gregorian calendar.</p>
+<p>returns a numeric time value, or an array of numeric time values
+with approximately millisecond accuracy.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="netcdftime.date2index">
+<code class="descclassname">netcdftime.</code><code class="descname">date2index</code><span class="sig-paren">(</span><em>dates</em>, <em>nctime</em>, <em>calendar=None</em>, <em>select='exact'</em><span class="sig-paren">)</span><a class="headerlink" href="#netcdftime.date2index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return indices of a netCDF time variable corresponding to the given dates.</p>
+<p><strong>`dates`</strong>: A datetime object or a sequence of datetime objects.
+The datetime objects should not include a time-zone offset.</p>
+<p><strong>`nctime`</strong>: A netCDF time variable object. The nctime object must have a
+<cite>units</cite> attribute.</p>
+<p><strong>`calendar`</strong>: describes the calendar used in the time calculations.
+All the values currently defined in the
+[CF metadata convention](<a class="reference external" href="http://cfconventions.org">http://cfconventions.org</a>)
+Valid calendars <cite>‘standard’, ‘gregorian’, ‘proleptic_gregorian’
+‘noleap’, ‘365_day’, ‘360_day’, ‘julian’, ‘all_leap’, ‘366_day’</cite>.
+Default is <cite>‘standard’</cite>, which is a mixed Julian/Gregorian calendar.
+If <cite>calendar</cite> is None, its value is given by <cite>nctime.calendar</cite> or
+<cite>standard</cite> if no such attribute exists.</p>
+<p><strong>`select`</strong>: <cite>‘exact’, ‘before’, ‘after’, ‘nearest’</cite>
+The index selection method. <cite>exact</cite> will return the indices perfectly
+matching the dates given. <cite>before</cite> and <cite>after</cite> will return the indices
+corresponding to the dates just before or just after the given dates if
+an exact match cannot be found. <cite>nearest</cite> will return the indices that
+correspond to the closest dates.</p>
+<p>returns an index (indices) of the netCDF time variable corresponding
+to the given datetime object(s).</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="netcdftime.num2date">
+<code class="descclassname">netcdftime.</code><code class="descname">num2date</code><span class="sig-paren">(</span><em>times</em>, <em>units</em>, <em>calendar='standard'</em><span class="sig-paren">)</span><a class="headerlink" href="#netcdftime.num2date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return datetime objects given numeric time values. The units
+of the numeric time values are described by the <cite>units</cite> argument
+and the <cite>calendar</cite> keyword. The returned datetime objects represent
+UTC with no time-zone offset, even if the specified
+<cite>units</cite> contain a time-zone offset.</p>
+<p><strong>`times`</strong>: numeric time values.</p>
+<p><strong>`units`</strong>: a string of the form <cite>&lt;time units&gt; since &lt;reference time&gt;</cite>
+describing the time units. <cite>&lt;time units&gt;</cite> can be days, hours, minutes,
+seconds, milliseconds or microseconds. <cite>&lt;reference time&gt;</cite> is the time
+origin.</p>
+<p><strong>`calendar`</strong>: describes the calendar used in the time calculations.
+All the values currently defined in the
+[CF metadata convention](<a class="reference external" href="http://cfconventions.org">http://cfconventions.org</a>)
+Valid calendars <cite>‘standard’, ‘gregorian’, ‘proleptic_gregorian’
+‘noleap’, ‘365_day’, ‘360_day’, ‘julian’, ‘all_leap’, ‘366_day’</cite>.
+Default is <cite>‘standard’</cite>, which is a mixed Julian/Gregorian calendar.</p>
+<p>returns a datetime instance, or an array of datetime instances with
+approximately millisecond accuracy.</p>
+<p><strong>*Note*</strong>: The datetime instances returned are ‘real’ python datetime
+objects if <cite>calendar=’proleptic_gregorian’</cite>, or
+<cite>calendar=’standard’</cite> or <cite>‘gregorian’</cite>
+and the date is after the breakpoint between the Julian and
+Gregorian calendars (1582-10-15). Otherwise, they are ‘phony’ datetime
+objects which support some but not all the methods of ‘real’ python
+datetime objects. The datetime instances
+do not contain a time-zone offset, even if the specified <cite>units</cite>
+contains one.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="netcdftime.JulianDayFromDate">
+<code class="descclassname">netcdftime.</code><code class="descname">JulianDayFromDate</code><span class="sig-paren">(</span><em>date</em>, <em>calendar='standard'</em><span class="sig-paren">)</span><a class="headerlink" href="#netcdftime.JulianDayFromDate" title="Permalink to this definition">¶</a></dt>
+<dd><p>creates a Julian Day from a ‘datetime-like’ object.  Returns the fractional
+Julian Day (approximately millisecond accuracy).</p>
+<p>if calendar=’standard’ or ‘gregorian’ (default), Julian day follows Julian
+Calendar on and before 1582-10-5, Gregorian calendar after 1582-10-15.</p>
+<p>if calendar=’proleptic_gregorian’, Julian Day follows gregorian calendar.</p>
+<p>if calendar=’julian’, Julian Day follows julian calendar.</p>
+<p>Algorithm:</p>
+<p>Meeus, Jean (1998) Astronomical Algorithms (2nd Edition). Willmann-Bell,
+Virginia. p. 63</p>
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">netcdftime</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Jeff Whitaker.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
